@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毎日の運試し - 神社おみくじ</title>
+    <!-- プレミアムなタイポグラフィのためにGoogle Fontsを読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Shippori+Mincho:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="omikuji-container">
+        <!-- 神社風の装飾 -->
+        <div class="shrine-deco top-deco"></div>
+        
+        <h1 class="title">おみくじ</h1>
+        <p class="subtitle">本日の運勢を占います</p>
+        
+        <!-- V2 抽選エリア (高さと直方体修正版) -->
+        <div class="result-area" id="result-area">
+            
+            <!-- 直方体の奥側（天面と穴） -->
+            <div class="box-base" id="box-base">
+                <div class="box-top-surface"></div>
+                <div class="box-hole-dark"></div>
+            </div>
+
+            <!-- 手とくじ紙（奥側と手前側の間に挟むことで、リアルに穴に入る） -->
+            <div class="hand-container" id="hand-container">
+                <div class="hand" id="hand-icon">✋</div>
+                <div class="fortune-paper" id="fortune-paper">
+                    <span id="result-text">？</span>
+                </div>
+            </div>
+
+            <!-- 直方体の手前側（天面の手前10pxと正面の壁） -->
+            <div class="box-front-cover" id="box-front-cover">
+                <div class="box-top-lip"></div>
+                <div class="box-front-wall">おみくじ</div>
+            </div>
+
+        </div>
+        
+        <!-- おみくじを引くボタン -->
+        <button id="draw-btn" class="draw-button">
+            <span>おみくじを引く</span>
+        </button>
+        
+        <!-- フッター（規約等へのリンク） -->
+        <div class="footer-links">
+            <button id="policy-btn" class="text-link">利用規約・プライバシーポリシー</button>
+        </div>
+    </div>
+
+    <!-- 規約・ポリシー用モーダル -->
+    <div class="modal-overlay hidden" id="policy-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <h2>利用規約およびプライバシーポリシー</h2>
+            
+            <div class="policy-section">
+                <h3>免責事項（利用規約）</h3>
+                <p>本アプリは個人開発によるエンターテインメント目的のサービスです。結果の正確性や効果を何ら保証するものではありません。</p>
+                <p>本アプリの利用によって生じたいかなる損害・トラブルについても、開発者は一切の責任を負いません。すべてご自身の判断と責任でご利用ください。</p>
+            </div>
+            
+            <div class="policy-section">
+                <h3>プライバシーポリシー</h3>
+                <p>本アプリ自体では、ユーザーの個人情報（氏名、メールアドレス等）を一切自発的に収集・保存していません。</p>
+                <p>ただし、本アプリを配信しているサーバー環境の仕様により、セキュリティ維持や障害対応を目的として、利用者のIPアドレスやブラウザ情報などのアクセスログが自動的に記録・収集される場合があります。</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

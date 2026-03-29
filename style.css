@@ -1,0 +1,366 @@
+/* カラーパレットの定義（洗練された赤と白、神社風） */
+:root {
+    --primary-red: #C9171E; 
+    --primary-red-dark: #AF131A;
+    --paper-white: #FAF8F5; 
+    --text-main: #333333;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--paper-white);
+    background-image: radial-gradient(#e6e0d8 1px, transparent 1px);
+    background-size: 20px 20px;
+    font-family: 'Noto Sans JP', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text-main);
+}
+
+.omikuji-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(201, 23, 30, 0.08), 0 1px 8px rgba(0, 0, 0, 0.05);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--primary-red);
+}
+
+.shrine-deco {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, var(--primary-red), var(--primary-red-dark));
+}
+
+.title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 2rem;
+    color: var(--primary-red);
+    margin: 0.5rem 0;
+    letter-spacing: 0.2rem;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* === V2 アニメーションエリア === */
+.result-area {
+    position: relative;
+    height: 310px; 
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    overflow: hidden; 
+    border-radius: 8px;
+    background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+    border: 1px dashed #e0e0e0;
+    transition: all 0.5s ease;
+}
+
+/* 直方体を構築するための基本枠（奥と手前） */
+.box-base, .box-front-cover {
+    position: absolute;
+    bottom: 20px; 
+    width: 140px;
+    border-radius: 4px;
+}
+
+/* === 箱の奥側 (z-index: 10) === */
+.box-base {
+    z-index: 10;
+    height: 115px; 
+}
+.box-top-surface {
+    height: 35px;
+    background: #A01116; 
+    border-radius: 4px 4px 0 0;
+}
+.box-hole-dark {
+    position: absolute;
+    top: 15px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 12px;
+    background: #111;
+    border-radius: 6px;
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.8);
+}
+
+/* === 動く手と紙 (z-index: 15) === */
+.hand-container {
+    position: absolute;
+    z-index: 15; 
+    top: -150px; 
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hand {
+    font-size: 3.5rem;
+    transform: rotate(180deg) scaleX(-1); 
+    line-height: 1;
+    margin-bottom: -25px; /* ★深く被せて紙を握っているように見せる */
+    text-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+    z-index: 2; /* ★紙よりも手前に表示して隠す */
+    position: relative;
+}
+
+.fortune-paper {
+    width: 60px;
+    height: 0px; 
+    background: #fff;
+    border: 2px solid transparent; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.5s;
+    border-radius: 2px;
+    z-index: 1; /* ★手よりも奥に表示 */
+    opacity: 0; /* ★最初は完全に透明にして空白に見せる */
+}
+
+/* アニメーション引き上げでのみ紙が現れる */
+.drawing-active .fortune-paper {
+    animation: drawAction 2.5s forwards, paperVis 2.5s forwards; /* 位置と透明度 */
+}
+
+@keyframes paperVis {
+    0%, 69% { opacity: 0; }
+    70%, 100% { opacity: 1; } /* 手が上がるタイミング(70%)に一致して紙出現 */
+}
+
+.fortune-paper span {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    writing-mode: vertical-rl;
+    color: var(--text-main);
+    transform: translateY(5px);
+}
+
+.fortune-paper span.great { color: var(--primary-red); }
+.fortune-paper span.bad { color: #555; }
+
+/* === 箱の手前側 (z-index: 20) === */
+.box-front-cover {
+    z-index: 20;
+    height: 90px; 
+    pointer-events: none; 
+}
+.box-top-lip {
+    height: 10px; 
+    background: #A01116; 
+    border-bottom: 1px solid rgba(0,0,0,0.3); 
+}
+.box-front-wall {
+    height: 80px;
+    background: linear-gradient(to bottom, var(--primary-red), var(--primary-red-dark));
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: 'Shippori Mincho', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+/* === アニメーション制御 === */
+
+/* ボタン押下時：手が降りてきて引き抜く */
+.drawing-active .hand-container {
+    animation: drawAction 2.5s forwards;
+}
+
+/* 引いている最中の箱の揺れ (奥壁と手前壁の両方を揺らす) */
+.drawing-active .box-base,
+.drawing-active .box-front-cover {
+    animation: boxShake 0.4s 1s 2;
+}
+
+/* 紙がポーンと開く設定 */
+.fortune-paper.show-paper {
+    height: 110px; 
+    border-color: #ddd; 
+    opacity: 1; /* ★アニメーション後も表示を維持する */
+    z-index: 3; /* ★紙が開いた瞬間、手(z:2)よりも手前に表示する！ */
+}
+
+/* 大吉の時の箱全体の光沢 */
+.result-area.great-glow {
+    box-shadow: inset 0 0 40px rgba(201, 23, 30, 0.2);
+    border-color: var(--primary-red);
+}
+
+@keyframes drawAction {
+    0% { top: -150px; opacity: 0;}            
+    10% { opacity: 1; }
+    30% { top: 180px; } 
+    40% { top: 180px; }    
+    70% { top: 180px; }    
+    100% { top: 15px; } 
+}
+
+@keyframes boxShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px) rotate(-1deg); }
+    75% { transform: translateX(3px) rotate(1deg); }
+}
+
+/* === それ以外の共通（ボタン） === */
+.draw-button {
+    background: linear-gradient(135deg, var(--primary-red), var(--primary-red-dark));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(201, 23, 30, 0.3);
+    transition: all 0.2s ease;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.draw-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: all 0.7s ease;
+}
+
+.draw-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 23, 30, 0.4);
+}
+.draw-button:hover::after {
+    left: 200%;
+}
+.draw-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(201, 23, 30, 0.3);
+}
+.draw-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* === フッターリンク === */
+.footer-links {
+    margin-top: 1.8rem;
+    font-size: 0.8rem;
+}
+.text-link {
+    background: none;
+    border: none;
+    color: #888;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 0;
+    transition: color 0.2s;
+}
+.text-link:hover {
+    color: var(--primary-red);
+}
+
+/* === モーダルウィンドウ === */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none; /* 透明な時はクリックを無効化 */
+}
+.modal-content {
+    background: var(--paper-white);
+    width: 85%;
+    max-width: 450px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    text-align: left;
+    transform: translateY(0);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.modal-overlay.hidden .modal-content {
+    transform: translateY(30px);
+}
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+.modal-close:hover {
+    color: var(--primary-red);
+}
+.modal-content h2 {
+    font-family: 'Shippori Mincho', serif;
+    color: var(--primary-red);
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.8rem;
+}
+.policy-section h3 {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+.policy-section p {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+}
